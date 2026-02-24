@@ -1,0 +1,60 @@
+.historical-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.historical-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.historical-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.historical-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.historical-controls input {
+  padding: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+}
+
+.historical-controls button {
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+}
+
+.historical-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.historical-hint {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.no-data {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}

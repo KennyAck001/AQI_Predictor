@@ -1,0 +1,55 @@
+.city-search {
+  position: relative;
+}
+
+.city-search-trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.5rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  min-width: 180px;
+}
+
+.city-search-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.city-search-value {
+  font-weight: 600;
+}
+
+.city-search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 0.25rem 0 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-width: 180px;
+  z-index: 10;
+}
+
+.city-search-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--text);
+  border-radius: 6px;
+}
+
+.city-search-dropdown button:hover,
+.city-search-dropdown button.active {
+  background: var(--surface-hover);
+  color: var(--accent);
+}

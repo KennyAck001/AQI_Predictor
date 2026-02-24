@@ -1,0 +1,18 @@
+.chart-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.chart-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.bar-chart .recharts-cartesian-grid-horizontal line,
+.bar-chart .recharts-cartesian-grid-vertical line {
+  stroke: var(--border);
+}

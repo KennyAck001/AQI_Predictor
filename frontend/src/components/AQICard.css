@@ -1,0 +1,41 @@
+.aqi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.aqi-card-value {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--aqi-color, var(--text));
+}
+
+.aqi-card-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.aqi-card-category {
+  font-weight: 600;
+  margin-top: 0.5rem;
+  color: var(--aqi-color, var(--text));
+}
+
+.aqi-card-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.aqi-card-advisory {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  text-align: left;
+}

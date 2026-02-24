@@ -1,0 +1,41 @@
+.alert-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+}
+
+.alert-banner button {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0 0.5rem;
+  opacity: 0.9;
+}
+
+.alert-banner button:hover {
+  opacity: 1;
+}
+
+.alert-banner.moderate {
+  background: #9e6a03;
+  color: #fff;
+}
+
+.alert-banner.poor {
+  background: #bc4c00;
+  color: #fff;
+}
+
+.alert-banner.very-poor {
+  background: #da3633;
+  color: #fff;
+}
+
+.alert-banner.severe {
+  background: #8b0000;
+  color: #fff;
+}
