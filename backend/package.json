@@ -1,0 +1,19 @@
+{
+  "name": "aqi-backend",
+  "version": "1.0.0",
+  "description": "AQI Monitoring & Forecasting API",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node scripts/seedData.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongoose": "^8.8.0",
+    "node-fetch": "^3.3.2"
+  }
+}
