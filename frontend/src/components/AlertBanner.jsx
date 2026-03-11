@@ -1,41 +1,31 @@
-import { useState, useEffect } from 'react';
 import './AlertBanner.css';
 
-const THRESHOLDS = [
-  { min: 201, level: 'Severe', className: 'severe' },
-  { min: 151, level: 'Very Poor', className: 'very-poor' },
-  { min: 101, level: 'Poor', className: 'poor' },
-  { min: 51, level: 'Moderate', className: 'moderate' },
+const LEVELS = [
+  { min: 301, cls: 'alert-hazardous',     icon: '☠️',  label: 'Hazardous' },
+  { min: 201, cls: 'alert-very-unhealthy',icon: '😰',  label: 'Very Unhealthy' },
+  { min: 151, cls: 'alert-unhealthy',     icon: '🤧',  label: 'Unhealthy' },
+  { min: 101, cls: 'alert-sensitive',     icon: '😷',  label: 'Sensitive Groups' },
+  { min:  51, cls: 'alert-moderate',      icon: '😐',  label: 'Moderate' },
 ];
 
+const MESSAGES = {
+  'Hazardous':        'Health emergency — stay indoors, avoid all outdoor activity.',
+  'Very Unhealthy':   'Everyone may experience serious health effects. Limit outdoor exposure.',
+  'Unhealthy':        'Everyone may begin to experience health effects. Consider staying indoors.',
+  'Sensitive Groups': 'Sensitive individuals should avoid prolonged outdoor exertion.',
+  'Moderate':         'Unusually sensitive people should consider limiting prolonged exertion.',
+};
+
 export default function AlertBanner({ aqi }) {
-  const [visible, setVisible] = useState(false);
-  const [message, setMessage] = useState('');
-  const [levelClass, setLevelClass] = useState('');
-
-  useEffect(() => {
-    if (aqi == null) {
-      setVisible(false);
-      return;
-    }
-    const t = THRESHOLDS.find((x) => aqi >= x.min);
-    if (t) {
-      setMessage(`AQI Alert: ${t.level} (${aqi}). Consider limiting outdoor exposure.`);
-      setLevelClass(t.className);
-      setVisible(true);
-    } else {
-      setVisible(false);
-    }
-  }, [aqi]);
-
-  if (!visible) return null;
-
+  if (aqi == null || aqi <= 50) return null;
+  const level = LEVELS.find((l) => aqi >= l.min) || LEVELS[LEVELS.length - 1];
   return (
-    <div className={`alert-banner ${levelClass}`} role="alert">
-      <span>{message}</span>
-      <button type="button" onClick={() => setVisible(false)} aria-label="Dismiss">
-        ×
-      </button>
+    <div className={`alert-banner ${level.cls}`}>
+      <span className="alert-icon">{level.icon}</span>
+      <span className="alert-text">
+        <strong>{MESSAGES[level.label]}</strong>
+      </span>
+      <span className="alert-level">AQI {Math.round(aqi)} · {level.label}</span>
     </div>
   );
 }

@@ -59,6 +59,23 @@ def prepare_features(df):
     return out
 
 
+def compute_lag_features(df, aqi_col="us_aqi"):
+    """Add lag features for AQI: 1h, 6h, 24h back.
+    Requires df to be sorted chronologically and have `aqi_col`.
+    NaN rows (start of series) are left as NaN and filled with 0 during X prep.
+    """
+    out = df.copy()
+    if aqi_col in out.columns:
+        out["us_aqi_lag_1h"]  = out[aqi_col].shift(1)
+        out["us_aqi_lag_6h"]  = out[aqi_col].shift(6)
+        out["us_aqi_lag_24h"] = out[aqi_col].shift(24)
+    else:
+        out["us_aqi_lag_1h"]  = 0
+        out["us_aqi_lag_6h"]  = 0
+        out["us_aqi_lag_24h"] = 0
+    return out
+
+
 def build_rolling_aqi(df, window=24):
     """Add rolling 24h mean PM2.5 and derived AQI for target."""
     out = df.copy()

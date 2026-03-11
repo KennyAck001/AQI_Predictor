@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react';
 import CitySearch from '../components/CitySearch';
-import { AQILineChart, PollutantBarChart } from '../components/Charts';
+import { AQILineChart } from '../components/Charts';
 import { aqiApi } from '../services/api';
 import './Historical.css';
 
+function avg(arr) {
+  const valid = arr.filter((v) => v != null && !isNaN(v));
+  return valid.length ? valid.reduce((a, b) => a + b, 0) / valid.length : null;
+}
+
 export default function Historical() {
   const [city, setCity] = useState({ name: 'Vadodara', lat: 22.3072, lon: 73.1812 });
-  const [start, setStart] = useState('');
-  const [end, setEnd] = useState('');
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [syncing, setSyncing] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 30);
-    if (!start) setStart(startDate.toISOString().slice(0, 10));
-    if (!end) setEnd(endDate.toISOString().slice(0, 10));
-  }, []);
+  const defaultEnd   = new Date().toISOString().slice(0, 10);
+  const defaultStart = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+  const [start, setStart] = useState(defaultStart);
+  const [end,   setEnd]   = useState(defaultEnd);
 
   const loadHistorical = () => {
     if (!start || !end) return;
@@ -37,65 +37,107 @@ export default function Historical() {
     setError(null);
     aqiApi
       .sync(city.name, city.lat, city.lon)
-      .then(() => {
-        loadHistorical();
-      })
+      .then(() => loadHistorical())
       .catch((err) => setError(err.message))
       .finally(() => setSyncing(false));
   };
 
-  const chartData = records.map((r) => ({
-    timestamp: r.timestamp,
-    aqi: r.aqi,
-  })).slice(0, 200);
+  // auto-load on city change if records exist
+  useEffect(() => {
+    if (records.length > 0) loadHistorical();
+  }, [city]); // eslint-disable-line
 
-  const latestPollutants = records.length ? records[0].pollutants : null;
+  const aqiValues  = records.map((r) => r.aqi);
+  const avgAQI     = avg(aqiValues);
+  const minAQI     = aqiValues.length ? Math.min(...aqiValues.filter((v) => v != null)) : null;
+  const maxAQI     = aqiValues.length ? Math.max(...aqiValues.filter((v) => v != null)) : null;
+
+  const chartData = records
+    .slice(0, 300)
+    .reverse()
+    .map((r) => ({ timestamp: r.timestamp, aqi: r.aqi }));
 
   return (
     <div className="historical">
-      <div className="historical-header">
-        <h1>Historical AQI</h1>
+      {/* ── Header ── */}
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Historical AQI</h1>
+          <p className="page-subtitle">Browse stored AQI records by city and date range</p>
+        </div>
         <CitySearch value={city} onChange={setCity} />
       </div>
 
-      <div className="historical-controls">
-        <label>
-          Start <input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
-        </label>
-        <label>
-          End <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} />
-        </label>
-        <button type="button" onClick={loadHistorical} disabled={loading}>
-          {loading ? 'Loading…' : 'Load'}
-        </button>
-        <button type="button" onClick={sync} disabled={syncing}>
-          {syncing ? 'Syncing…' : 'Sync from API'}
-        </button>
+      {/* ── Controls ── */}
+      <div className="historical-controls-card glass-strong fade-up">
+        <div className="historical-controls-row">
+          <div className="date-field">
+            <label>From</label>
+            <input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
+          </div>
+          <div className="date-field">
+            <label>To</label>
+            <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} />
+          </div>
+          <button className="btn btn-primary" onClick={loadHistorical} disabled={loading}>
+            {loading ? '⏳ Loading…' : '🔍 Load Records'}
+          </button>
+          <button className="btn btn-secondary" onClick={sync} disabled={syncing}>
+            {syncing ? '⏳ Syncing…' : '🔄 Sync from API'}
+          </button>
+        </div>
+        <p className="historical-hint">
+          💡 Hit <strong>Sync from API</strong> first to fetch data for your chosen city, then filter by date.
+        </p>
       </div>
 
-      <p className="historical-hint">
-        Use &quot;Sync from API&quot; to fetch and store recent AQI data for the selected city, then filter by date range.
-      </p>
+      {error && <div className="error-state">{error}</div>}
 
-      {error && <p className="error">{error}</p>}
-
+      {/* ── Summary stats ── */}
       {records.length > 0 && (
         <>
-          <section className="dashboard-section">
-            <h2>AQI Over Time</h2>
-            <AQILineChart data={chartData} series={['actual']} height={300} />
-          </section>
-          {latestPollutants && (
-            <section className="dashboard-section">
-              <h2>Latest Record: Pollutants</h2>
-              <PollutantBarChart pollutants={latestPollutants} />
-            </section>
-          )}
+          <div className="stat-bar fade-up">
+            <div className="stat-pill glass">
+              <div className="stat-pill-icon">📊</div>
+              <div className="stat-pill-value">{avgAQI != null ? Math.round(avgAQI) : '—'}</div>
+              <div className="stat-pill-label">Average AQI</div>
+            </div>
+            <div className="stat-pill glass">
+              <div className="stat-pill-icon">✅</div>
+              <div className="stat-pill-value" style={{ color: 'var(--good)' }}>
+                {minAQI != null ? Math.round(minAQI) : '—'}
+              </div>
+              <div className="stat-pill-label">Best (Min AQI)</div>
+            </div>
+            <div className="stat-pill glass">
+              <div className="stat-pill-icon">⚠️</div>
+              <div className="stat-pill-value" style={{ color: 'var(--unhealthy)' }}>
+                {maxAQI != null ? Math.round(maxAQI) : '—'}
+              </div>
+              <div className="stat-pill-label">Worst (Max AQI)</div>
+            </div>
+            <div className="stat-pill glass">
+              <div className="stat-pill-icon">📋</div>
+              <div className="stat-pill-value">{records.length}</div>
+              <div className="stat-pill-label">Total Records</div>
+            </div>
+          </div>
+
+          <div className="historical-chart-card glass-strong fade-up">
+            <div className="dashboard-card-header" style={{ marginBottom: 16 }}>
+              <span className="dashboard-card-icon">📈</span>
+              <span className="dashboard-card-title">AQI Over Time</span>
+              <span className="dashboard-card-note">Showing up to 300 records</span>
+            </div>
+            <AQILineChart data={chartData} series={['actual']} height={320} />
+          </div>
         </>
       )}
 
-      {!loading && records.length === 0 && start && end && (
-        <p className="no-data">No historical records for this range. Click &quot;Sync from API&quot; to fetch data first.</p>
+      {!loading && !syncing && records.length === 0 && (
+        <div className="empty-state">
+          No records found for this range. Click <strong>Sync from API</strong> to fetch data first.
+        </div>
       )}
     </div>
   );

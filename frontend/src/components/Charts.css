@@ -1,18 +1,19 @@
+/* Charts */
 .chart-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-  margin: 1rem 0;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.chart-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
 }
 
 .chart-title {
-  margin: 0 0 0.5rem;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-}
-
-.bar-chart .recharts-cartesian-grid-horizontal line,
-.bar-chart .recharts-cartesian-grid-vertical line {
-  stroke: var(--border);
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 12px;
 }

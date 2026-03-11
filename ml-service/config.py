@@ -16,4 +16,9 @@ FEATURE_COLS = [
     "pm2_5", "pm10", "no2", "so2", "o3", "co",
     "temperature", "humidity", "wind_speed", "precipitation",
     "hour_sin", "hour_cos", "dow_sin", "dow_cos",
+    # Lag features — AQI memory
+    "us_aqi_lag_1h", "us_aqi_lag_6h", "us_aqi_lag_24h",
 ]
+
+# How many past days to fetch for training
+TRAIN_PAST_DAYS = 90

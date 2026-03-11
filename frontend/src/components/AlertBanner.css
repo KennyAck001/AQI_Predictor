@@ -1,41 +1,48 @@
+/* AlertBanner */
 .alert-banner {
+  animation: slideDown 0.4s ease both;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1.5rem;
+  gap: 12px;
+  padding: 12px clamp(16px,4vw,40px);
+  font-size: 0.88rem;
   font-weight: 500;
+  position: relative;
+  z-index: 99;
 }
 
-.alert-banner button {
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 1.5rem;
-  line-height: 1;
-  padding: 0 0.5rem;
-  opacity: 0.9;
+.alert-banner.alert-moderate {
+  background: rgba(234,179,8,0.15);
+  border-bottom: 1px solid rgba(234,179,8,0.3);
+  color: #fbbf24;
+}
+.alert-banner.alert-sensitive {
+  background: rgba(249,115,22,0.15);
+  border-bottom: 1px solid rgba(249,115,22,0.3);
+  color: #fb923c;
+}
+.alert-banner.alert-unhealthy {
+  background: rgba(239,68,68,0.15);
+  border-bottom: 1px solid rgba(239,68,68,0.3);
+  color: #f87171;
+}
+.alert-banner.alert-very-unhealthy {
+  background: rgba(168,85,247,0.15);
+  border-bottom: 1px solid rgba(168,85,247,0.3);
+  color: #c084fc;
+}
+.alert-banner.alert-hazardous {
+  background: rgba(127,29,29,0.3);
+  border-bottom: 1px solid rgba(239,68,68,0.4);
+  color: #fca5a5;
 }
 
-.alert-banner button:hover {
-  opacity: 1;
-}
-
-.alert-banner.moderate {
-  background: #9e6a03;
-  color: #fff;
-}
-
-.alert-banner.poor {
-  background: #bc4c00;
-  color: #fff;
-}
-
-.alert-banner.very-poor {
-  background: #da3633;
-  color: #fff;
-}
-
-.alert-banner.severe {
-  background: #8b0000;
-  color: #fff;
+.alert-icon { font-size: 1.2rem; }
+.alert-text { flex: 1; }
+.alert-level {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
 }

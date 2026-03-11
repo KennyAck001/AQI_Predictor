@@ -1,57 +1,134 @@
-.dashboard-header {
+/* Dashboard */
+.dashboard { animation: fadeUp 0.4s ease both; }
+
+/* ─── Page header row ────────────────────────────────────── */
+.page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.page-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; }
+.page-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
-.dashboard-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.dashboard-current {
+/* ─── Hero ───────────────────────────────────────────────── */
+.dashboard-hero {
   display: grid;
-  grid-template-columns: minmax(200px, 280px) 1fr;
-  gap: 1.5rem;
-  align-items: start;
-  margin-bottom: 2rem;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  padding: 28px;
+  margin-bottom: 24px;
+  align-items: center;
 }
 
 @media (max-width: 640px) {
-  .dashboard-current {
-    grid-template-columns: 1fr;
-  }
+  .dashboard-hero { grid-template-columns: 1fr; }
 }
 
-.dashboard-meta {
-  font-size: 0.9rem;
+/* ─── Weather snap row ───────────────────────────────────── */
+.weather-snap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.weather-snap-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.weather-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.weather-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-size: 0.88rem;
+  min-width: 110px;
+}
+.weather-pill-icon { font-size: 1.3rem; }
+.weather-pill-info {}
+.weather-pill-value { font-weight: 700; font-size: 1rem; }
+.weather-pill-label { font-size: 0.72rem; color: var(--text-muted); }
+
+.location-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* ─── Pollutant mini-cards ───────────────────────────────── */
+.pollutant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pollutant-card {
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pollutant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.pollutant-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.pollutant-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.pollutant-unit {
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
-.dashboard-meta p {
-  margin: 0.25rem 0;
+/* ─── Section card ───────────────────────────────────────── */
+.dashboard-card {
+  padding: 24px;
+  margin-bottom: 24px;
 }
-
-.dashboard-section h2 {
-  font-size: 1.1rem;
-  margin: 0 0 0.5rem;
+.dashboard-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
 }
-
-.chart-note {
-  font-size: 0.85rem;
+.dashboard-card-icon { font-size: 1.2rem; }
+.dashboard-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.dashboard-card-note {
+  margin-left: auto;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  margin-bottom: 0.5rem;
-}
-
-.loading,
-.error {
-  padding: 2rem;
-  text-align: center;
-}
-
-.error {
-  color: var(--unhealthy);
 }
